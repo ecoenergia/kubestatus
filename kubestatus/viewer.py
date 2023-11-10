@@ -1,9 +1,22 @@
 import argparse
 import json
+import os
 import subprocess
 import time
 from rich.console import Console
 from rich.table import Table
+
+import os
+
+def clear_screen():
+    """
+    Clears the console screen. Performs more reliably than rich.console.clear()
+
+    This function uses system-specific commands ('cls' for Windows, 'clear' for Unix/Linux)
+    to clear the console screen. It's an alternative to the console.clear() method from the rich library,
+    useful in environments where console.clear() might not function as expected.
+    """
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 def get_kubectl_output(command):
     """
@@ -126,13 +139,20 @@ def create_image_count_table(namespace):
 
     return table
 
-def main(namespace):
+def main():
     """
     Main function that continually updates and displays Kubernetes status tables.
 
     Args:
     namespace (str): The Kubernetes namespace to monitor.
     """
+    parser = argparse.ArgumentParser(description="Display Kubernetes namespace status", allow_abbrev=False)
+    parser.add_argument("--namespace", help="Specify the Kubernetes namespace", default="", type=str)
+    parser.add_argument("--refresh", help="Number of seconds between screen refreshes", default=5, type=int)
+    args = parser.parse_args()
+
+    namespace = args.namespace if args.namespace else get_default_namespace()
+
     console = Console()
 
     while True:
@@ -141,7 +161,7 @@ def main(namespace):
         deployments_table = create_deployments_table(namespace)
         image_count_table = create_image_count_table(namespace)
 
-        console.clear()
+        clear_screen()
         console.print("Pods Status:", style="bold green")
         console.print(pods_table)
         console.print("\nServices Status:", style="bold blue")
@@ -151,10 +171,7 @@ def main(namespace):
         console.print("\nContainer Image Counts:", style="bold yellow")
         console.print(image_count_table)
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Display Kubernetes namespace status")
-    parser.add_argument("-n", "--namespace", help="Specify the Kubernetes namespace", type=str)
-    args = parser.parse_args()
+        time.sleep(args.refresh)
 
-    namespace = args.namespace if args.namespace else get_default_namespace()
-    main(namespace)
+if __name__ == "__main__":
+    main()

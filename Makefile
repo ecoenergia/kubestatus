@@ -14,3 +14,6 @@ upload:
 dist: clean build
 
 all: clean build upload
+
+run_web:
+	ttyd -p 8080 python -m kubestatus.viewer

@@ -22,6 +22,18 @@ This Python script provides a continually updating display of the status of vari
 
 2. **Stopping the Script:** Press `Ctrl+C` to exit the continuous update loop.
 
+## Distribution
+
+The package can be built and distributed using the provided `Makefile`. `setuptools`, `twine` and `wheel` should already be installed locally. The following commands are available:
+
+- `make clean`: Clean up previous build artifacts.
+- `make build`: Build the package into a distributable format.
+- `make upload`: Upload the package to PyPI.
+- `make dist`: Run the `clean` and `build` steps sequentially.
+- `make all`: Clean, build, and upload the package to PyPI.
+
+Before running `make upload`, ensure that you have registered an account on [PyPI](https://pypi.org/) and configured your `.pypirc` file with your credentials.
+
 ## Functions
 
 - `get_kubectl_output`: Executes a kubectl command and returns its output.
