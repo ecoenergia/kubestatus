@@ -47,4 +47,3 @@ Before running `make upload`, ensure that you have registered an account on [PyP
 ## License
 
 This script is released under the MIT License.
-
