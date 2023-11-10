@@ -7,7 +7,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name='kubestatus',
-    version='0.1.1',
+    version='0.1.2',
     author='Stephen Dictor',
     author_email='sdictor@renew-ap.com',
     long_description=long_description,
