@@ -8,12 +8,15 @@ clean:
 build:
 	python setup.py sdist bdist_wheel
 
+check:
+	twine check dist/*
+
 upload:
 	twine upload dist/*
 
-dist: clean build
+dist: clean build check
 
-all: clean build upload
+all: clean build check upload
 
 run_web:
 	ttyd -p 8080 python -m kubestatus.viewer
